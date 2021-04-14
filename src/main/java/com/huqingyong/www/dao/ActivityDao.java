@@ -2,7 +2,6 @@ package com.huqingyong.www.dao;
 
 import com.huqingyong.www.po.Activity;
 
-import java.util.List;
 
 public interface ActivityDao {
     //发布活动

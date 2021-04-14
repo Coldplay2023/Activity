@@ -1,9 +1,7 @@
 package com.huqingyong.www.dao.Impl;
 
 import com.huqingyong.www.dao.SponsorDao;
-import com.huqingyong.www.po.Activity;
 import com.huqingyong.www.po.Sponsor;
-import com.huqingyong.www.po.Student;
 import com.huqingyong.www.util.JdbcUtils;
 
 import java.sql.Connection;
@@ -34,8 +32,8 @@ public class SponsorDaoImpl implements SponsorDao {
                 sponsor.setPrincipalContact(rs.getString("principalContact"));
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -43,27 +41,24 @@ public class SponsorDaoImpl implements SponsorDao {
     }
 
     @Override
-    public boolean identifySponsor(String account, String password) {
-
+    public boolean identifySponsor(String account, String password,String whetherNull) {
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
-        Sponsor sponsor=new Sponsor();
         try {
             conn= JdbcUtils.getConnection();
-            String sql="select * from t_sponsor where account =? and password=?";
+            String sql="select * from t_sponsor where account =? and password=? and managerId is "+whetherNull ;
             ps=conn.prepareStatement(sql);
             ps.setString(1,account);
             ps.setString(2,password);
-
             rs=ps.executeQuery();
             if(rs.next()) {
                 return true;
             }
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -74,7 +69,6 @@ public class SponsorDaoImpl implements SponsorDao {
     public void savingSponsor(Sponsor sponsor) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="insert t_sponsor (account,password,clubName,principalName,principalContact,clubIntroduction) " +
@@ -92,10 +86,10 @@ public class SponsorDaoImpl implements SponsorDao {
             ps.executeUpdate();
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -103,7 +97,6 @@ public class SponsorDaoImpl implements SponsorDao {
     public void updateSponsor(Sponsor sponsor) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="update t_sponsor set account=? ,password=?, clubName=?, principalName=?,principalContact=?,clubIntroduction=?" +
@@ -122,10 +115,10 @@ public class SponsorDaoImpl implements SponsorDao {
             ps.executeUpdate();
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 

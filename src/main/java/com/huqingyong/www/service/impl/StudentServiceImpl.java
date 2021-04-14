@@ -1,8 +1,6 @@
 package com.huqingyong.www.service.impl;
 
-import com.huqingyong.www.dao.Impl.PageDaoImpl;
 import com.huqingyong.www.dao.Impl.StudentDaoImpl;
-import com.huqingyong.www.dao.PageDao;
 import com.huqingyong.www.dao.StudentDao;
 import com.huqingyong.www.po.Student;
 import com.huqingyong.www.service.StudentService;
@@ -26,7 +24,6 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public Student queryStudent(String number) {
-
         return studentDao.queryStudent(number);
     }
 

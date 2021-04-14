@@ -32,11 +32,11 @@ public class StudentServlet extends BaseServlet{
     }
     protected void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         Student student=WebUtils.copyParamTOBean(req.getParameterMap(),new Student());
-        HttpSession session= req.getSession();
-        session.setAttribute("number",student.getNumber());
-        session.setAttribute("studentId",studentService.queryStudent(student.getNumber()).getId());
         if(studentService.savingStudent(student)){
-            req.getRequestDispatcher("/pages/index/index.jsp").forward(req, resp);
+            HttpSession session= req.getSession();
+            session.setAttribute("number",student.getNumber());
+            session.setAttribute("studentId",studentService.queryStudent(student.getNumber()).getId());
+            req.getRequestDispatcher("/pages/index/welcome.jsp").forward(req, resp);
         }
         else {
             req.setAttribute("msg", "用户名已经存在，请登录");
@@ -54,7 +54,6 @@ public class StudentServlet extends BaseServlet{
 
     protected void update(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         Student student=WebUtils.copyParamTOBean(req.getParameterMap(),new Student());
-        System.out.println(student);
         studentService.updateStudent(student);
         showStudent(req,resp);
     }

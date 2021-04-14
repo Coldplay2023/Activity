@@ -13,7 +13,6 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
     public void update(String context) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="update t_announcement set context=? ";
@@ -23,10 +22,10 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
             //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -48,8 +47,8 @@ public class AnnouncementDaoImpl implements AnnouncementDao {
                 context=rs.getString("context");
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }

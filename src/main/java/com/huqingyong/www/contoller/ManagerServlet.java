@@ -2,9 +2,7 @@ package com.huqingyong.www.contoller;
 
 import com.huqingyong.www.po.*;
 import com.huqingyong.www.service.ManagerService;
-import com.huqingyong.www.service.StudentService;
 import com.huqingyong.www.service.impl.ManagerServiceImpl;
-import com.huqingyong.www.service.impl.StudentServiceImpl;
 import com.huqingyong.www.util.WebUtils;
 
 import javax.servlet.ServletException;

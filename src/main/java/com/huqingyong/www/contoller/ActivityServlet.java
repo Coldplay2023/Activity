@@ -9,7 +9,6 @@ import com.huqingyong.www.service.impl.StudentServiceImpl;
 import com.huqingyong.www.util.WebUtils;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
@@ -21,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
-;
 
 public class ActivityServlet extends BaseServlet{
     ActivityService activityService=new ActivityServiceImpl();
@@ -40,7 +38,6 @@ public class ActivityServlet extends BaseServlet{
             try {
                 //解析上传的数据。得到每一个表单项FileItem
                 List<FileItem> list=servletFileUpload.parseRequest(req);
-                System.out.println("这里执行");
                 //循环判断，每一个表单项，是普通类型，还是上传的文件
                 for(FileItem fileItem:list){
                     if(fileItem.isFormField()){
@@ -140,22 +137,17 @@ public class ActivityServlet extends BaseServlet{
         Integer studentId=(Integer) session.getAttribute("studentId");
         Integer activityId=WebUtils.parseInt(req.getParameter("activityId"),0);
         req.setAttribute("activityName",req.getParameter("activityName"));
-        System.out.println("活动id"+activityId);
-        System.out.println("学生id"+studentId);
         if (activityService.weatherFull(activityId)){
             req.setAttribute("msg","活动人数已满");
-            System.out.println("执行人数满方法");
             req.setAttribute("msg2","活动已满");
         }
         if(studentService.whetherJoin(studentId,activityId)){
             req.setAttribute("msg","你已经参加过这个活动");
-            System.out.println("执行已经参加方法");
             req.setAttribute("msg1","已经");
         }
         else{
             studentService.joinActivity(studentId,activityId);
             req.setAttribute("msg","报名成功");
-            System.out.println("执行报名成功方法");
             req.setAttribute("msg1","刚刚");
         }
        showIndex(req,resp);

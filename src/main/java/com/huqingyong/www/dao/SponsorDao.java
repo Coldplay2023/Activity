@@ -1,17 +1,17 @@
 package com.huqingyong.www.dao;
 
-import com.huqingyong.www.po.Activity;
+
 import com.huqingyong.www.po.Sponsor;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.List;
 
 public interface SponsorDao {
+    //查询主办方
     Sponsor querySponsor(String account);
-    boolean identifySponsor(String account,String password);
+    //验证主办方是否存在
+    boolean identifySponsor(String account,String password,String whetherNull);
+    //存放主办方
     void savingSponsor(Sponsor sponsor);
+    //更新主办方
     void updateSponsor(Sponsor sponsor);
 
 }

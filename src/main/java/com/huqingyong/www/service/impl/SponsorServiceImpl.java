@@ -1,13 +1,11 @@
 package com.huqingyong.www.service.impl;
 
-import com.huqingyong.www.contoller.SponsorServlet;
 import com.huqingyong.www.dao.Impl.PageDaoImpl;
 import com.huqingyong.www.dao.Impl.SponsorDaoImpl;
 import com.huqingyong.www.dao.Impl.StudentDaoImpl;
 import com.huqingyong.www.dao.PageDao;
 import com.huqingyong.www.dao.SponsorDao;
 import com.huqingyong.www.dao.StudentDao;
-import com.huqingyong.www.po.Activity;
 import com.huqingyong.www.po.Page;
 import com.huqingyong.www.po.Sponsor;
 import com.huqingyong.www.po.Student;
@@ -20,8 +18,8 @@ public class SponsorServiceImpl implements SponsorService {
     PageDao pageDao=new PageDaoImpl();
     StudentDao studentDao=new StudentDaoImpl();
     @Override
-    public boolean identifySponsor(String account, String password) {
-        if(sponsorDao.identifySponsor(account,password)){
+    public boolean identifySponsor(String account, String password,String whetherNull) {
+        if(sponsorDao.identifySponsor(account,password,whetherNull)){
             return true;
         }
         return false;
@@ -35,7 +33,7 @@ public class SponsorServiceImpl implements SponsorService {
 
     @Override
     public boolean savingSponsor(Sponsor sponsor) {
-        if(sponsorDao.identifySponsor(sponsor.getAccount(),sponsor.getPassword())){
+        if(sponsorDao.identifySponsor(sponsor.getAccount(),sponsor.getPassword(),"not null")){
             return false;
         }
        sponsorDao.savingSponsor(sponsor);

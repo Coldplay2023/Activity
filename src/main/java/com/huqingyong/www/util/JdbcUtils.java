@@ -18,11 +18,6 @@ public class JdbcUtils {
     public JdbcUtils() {
     }
 
-    public static void initialization(){
-        Connection cont=null;
-        Statement stmt=null;
-        ResultSet rs=null;
-    }
 
     public static Connection getConnection() throws SQLException {
 
@@ -39,24 +34,24 @@ public class JdbcUtils {
         if (rs != null) {
             try {
                 rs.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
             }
         }
 
         if (stmt != null) {
             try {
                 stmt.close();
-            } catch (SQLException throwables) {
-
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
             }
         }
 
         if (cont != null) {
             try {
                 cont.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
             }
         }
     }

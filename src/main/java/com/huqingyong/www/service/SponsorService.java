@@ -6,7 +6,7 @@ import com.huqingyong.www.po.Student;
 
 public interface SponsorService {
     //验证主办方的登录信息
-    boolean identifySponsor(String account,String password);
+    boolean identifySponsor(String account,String password,String whetherNull);
     //查询主办方
     Sponsor querySponsor(String account);
     //注册保存主办方

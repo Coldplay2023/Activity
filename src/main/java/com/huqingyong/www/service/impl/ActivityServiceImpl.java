@@ -70,18 +70,17 @@ public class ActivityServiceImpl implements ActivityService {
             String startTime=activity.getActivityStartTime();
             String overTime=activity.getActivityOverTime();
             SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            ParsePosition pos=new ParsePosition(0);
 
             Date DateTime1=sdf.parse(startTime);
             Date DateTime2=sdf.parse(overTime);
             Long startDateTime=DateTime1.getTime();
             Long overDateTime=DateTime2.getTime();
             Long nowTime=System.currentTimeMillis();
-            if(managerId==null){
+            if(managerId==0){
                 activity.setActivityStatus("申请中");
                 activityDao.changeStatus(activityId,"申请中");
             }
-            if(managerId!=null){
+            if(managerId!=0){
                 if(nowTime<startDateTime){
                     activity.setActivityStatus("待进行");
                     activityDao.changeStatus(activityId,"待进行");

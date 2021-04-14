@@ -8,7 +8,6 @@ import com.huqingyong.www.po.Activity;
 import com.huqingyong.www.po.Page;
 import com.huqingyong.www.po.Sponsor;
 import com.huqingyong.www.service.ManagerService;
-import com.huqingyong.www.service.StudentService;
 
 import java.util.List;
 

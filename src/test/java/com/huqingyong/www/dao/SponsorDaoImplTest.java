@@ -16,11 +16,6 @@ class SponsorDaoImplTest {
     }
 
     @Test
-    void identifySponsor() {
-        System.out.println(sponsorDao.identifySponsor("12","12"));
-    }
-
-    @Test
     void savingSponsor() {
         Sponsor sponsor=new Sponsor("14","14","好呀","yong","123456","123456");
         sponsorDao.savingSponsor(sponsor);

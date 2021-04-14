@@ -14,7 +14,6 @@ public class StudentDaoImpl implements StudentDao{
     public void saveStudent(Student student) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="insert into t_student (number,password,name,grade_academe) values(?,?,?,?)";
@@ -26,12 +25,10 @@ public class StudentDaoImpl implements StudentDao{
             ps.setString(4,student.getGrade_academe());
             //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
-            System.out.println("插入成功");
-
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -46,7 +43,6 @@ public class StudentDaoImpl implements StudentDao{
             String sql="select * from t_student where number =?";
             ps=conn.prepareStatement(sql);
             ps.setString(1,number);
-
             rs=ps.executeQuery();
             if(rs.next()) {
                 student.setNumber(number);
@@ -58,8 +54,8 @@ public class StudentDaoImpl implements StudentDao{
             }
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -71,7 +67,6 @@ public class StudentDaoImpl implements StudentDao{
     public void updateStudent(Student student) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="update t_student set number=? ,password=?, name=?, grade_academe=? where number =?";
@@ -87,10 +82,10 @@ public class StudentDaoImpl implements StudentDao{
             ps.executeUpdate();
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -113,8 +108,8 @@ public class StudentDaoImpl implements StudentDao{
             }
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -125,7 +120,6 @@ public class StudentDaoImpl implements StudentDao{
     public void updateTime(String number,Integer time) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="update t_student set time=? where number=?";
@@ -137,10 +131,10 @@ public class StudentDaoImpl implements StudentDao{
             ps.executeUpdate();
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -151,7 +145,6 @@ public class StudentDaoImpl implements StudentDao{
     public void insertStudent1(Integer studentId, Integer activityId) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="insert t_relationship1 (studentId,activityId) values(?,?)";
@@ -163,10 +156,10 @@ public class StudentDaoImpl implements StudentDao{
             ps.executeUpdate();
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -189,8 +182,8 @@ public class StudentDaoImpl implements StudentDao{
             }
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -201,7 +194,6 @@ public class StudentDaoImpl implements StudentDao{
     public void insertStudent2(Integer studentId, Integer sponsorId,Integer activityId) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="insert t_relationship2 (studentId,sponsorId,activityId) values(?,?,?)";
@@ -214,10 +206,10 @@ public class StudentDaoImpl implements StudentDao{
             ps.executeUpdate();
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -225,7 +217,6 @@ public class StudentDaoImpl implements StudentDao{
     public void deleteStudent1(Integer studentId, Integer activityId) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="delete from t_relationship1 where studentId=? and activityId=?";
@@ -237,10 +228,10 @@ public class StudentDaoImpl implements StudentDao{
             ps.executeUpdate();
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -248,7 +239,6 @@ public class StudentDaoImpl implements StudentDao{
     public void deleteStudent2(Integer studentId, Integer sponsorId, Integer activityId) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="delete from t_relationship2 where studentId=? and activityId=? and sponsorId=?";
@@ -261,10 +251,10 @@ public class StudentDaoImpl implements StudentDao{
             ps.executeUpdate();
 
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 

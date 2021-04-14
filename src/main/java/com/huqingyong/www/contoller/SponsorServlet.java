@@ -1,6 +1,5 @@
 package com.huqingyong.www.contoller;
 
-import com.huqingyong.www.po.Activity;
 import com.huqingyong.www.po.Page;
 import com.huqingyong.www.po.Sponsor;
 import com.huqingyong.www.po.Student;
@@ -33,10 +32,13 @@ public class SponsorServlet extends BaseServlet{
        session.setAttribute("sponsorPassword",password);
        Integer sponsorId=(sponsorService.querySponsor(account)).getId();
        session.setAttribute("sponsorId",sponsorId);
-       if(sponsorService.identifySponsor(account,password)){
+       if(sponsorService.identifySponsor(account,password,"not null")){
            req.getRequestDispatcher("/pages/sponsor/sponsor.jsp").forward(req,resp);
        }
-       else {
+       else if(sponsorService.identifySponsor(account,password,"null")){
+           req.getRequestDispatcher("/pages/sponsor/sponsorRegister.jsp").forward(req,resp);
+       }
+       else{
            req.setAttribute("msg","用户名或密码错误");
            req.setAttribute("account",account);
            req.getRequestDispatcher("/pages/user/sponsorLogin.jsp").forward(req,resp);
@@ -45,17 +47,17 @@ public class SponsorServlet extends BaseServlet{
    //注册
     protected void register(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Sponsor sponsor= WebUtils.copyParamTOBean(req.getParameterMap(),new Sponsor());
-        HttpSession session= req.getSession();
-        session.setAttribute("sponsorAccount",sponsor.getAccount());
-        session.setAttribute("sponsorPassword",sponsor.getPassword());
-        Integer sponsorId=(sponsorService.querySponsor(sponsor.getAccount())).getId();
-        session.setAttribute("sponsorId",sponsorId);
         if(sponsorService.savingSponsor(sponsor)){
-            req.getRequestDispatcher("/pages/sponsor/sponsor.jsp").forward(req, resp);
+            HttpSession session= req.getSession();
+            session.setAttribute("sponsorAccount",sponsor.getAccount());
+            session.setAttribute("sponsorPassword",sponsor.getPassword());
+            Integer sponsorId=(sponsorService.querySponsor(sponsor.getAccount())).getId();
+            session.setAttribute("sponsorId",sponsorId);
+            req.getRequestDispatcher("/pages/user/sponsorLogin.jsp").forward(req, resp);
         }
         else {
             req.setAttribute("msg", "用户名已经存在，请登录");
-            req.getRequestDispatcher("/pages/user/sponsorRegist.jsp").forward(req, resp);
+            req.getRequestDispatcher("/pages/user/sponsorRegister.jsp").forward(req, resp);
         }
     }
    //展示主办方信息

@@ -1,9 +1,7 @@
 package com.huqingyong.www.dao.Impl;
 
 import com.huqingyong.www.dao.ManagerDao;
-import com.huqingyong.www.po.Student;
 import com.huqingyong.www.util.JdbcUtils;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,8 +25,8 @@ public class ManagerDaoImpl implements ManagerDao {
                 return true;
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -52,8 +50,8 @@ public class ManagerDaoImpl implements ManagerDao {
                 managerId=rs.getInt("id");
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -64,7 +62,6 @@ public class ManagerDaoImpl implements ManagerDao {
     public void updateActivityManagerId(Integer activityId,Integer managerId) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="update t_activity set managerId=? where id=?";
@@ -75,10 +72,10 @@ public class ManagerDaoImpl implements ManagerDao {
             //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -86,7 +83,6 @@ public class ManagerDaoImpl implements ManagerDao {
     public void updateSponsorManagerId(Integer sponsorId,Integer managerId) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="update t_sponsor set managerId=? where id=?";
@@ -97,10 +93,10 @@ public class ManagerDaoImpl implements ManagerDao {
             //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -108,7 +104,6 @@ public class ManagerDaoImpl implements ManagerDao {
     public void deleteActivity(Integer activityId) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="delete from t_activity  where id=?";
@@ -118,10 +113,10 @@ public class ManagerDaoImpl implements ManagerDao {
             //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 
@@ -129,7 +124,6 @@ public class ManagerDaoImpl implements ManagerDao {
     public void deleteSponsor(Integer sponsorId) {
         Connection conn=null;
         PreparedStatement ps=null;
-        ResultSet rs=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="delete from t_sponsor  where id=?";
@@ -139,10 +133,10 @@ public class ManagerDaoImpl implements ManagerDao {
             //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.close(conn,ps,null);
         }
     }
 }

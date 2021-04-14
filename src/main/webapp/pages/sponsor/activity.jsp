@@ -51,8 +51,7 @@
                 <td>${activity.activityOverTime}</td>
                 <td>${activity.activityTime}</td>
                 <td>${activity.activityPeople}</td>
-                <td><a href="sponsorServlet?action=change&&activityId=${activity.id}
-                &&bool=${empty requestScope.bool?"checkStudent":"provideTime"}">${requestScope.msg}</a></td>
+                <td><a href="sponsorServlet?action=change&&activityId=${activity.id}&&bool=${empty requestScope.bool?"checkStudent":"provideTime"}">${requestScope.msg}</a></td>
             </tr>
             </c:forEach>
 

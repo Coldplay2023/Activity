@@ -5,6 +5,7 @@ import com.huqingyong.www.po.Activity;
 import com.huqingyong.www.po.Sponsor;
 import com.huqingyong.www.po.Student;
 import com.huqingyong.www.util.JdbcUtils;
+import com.huqingyong.www.util.WebUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,8 +19,7 @@ public class PageDaoImpl implements PageDao {
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
-        List<Activity> activities=new ArrayList<Activity>();
-
+        List<Activity> activities=new ArrayList<>();
         try {
             conn= JdbcUtils.getConnection();
             String sql="select * from t_activity where sponsorId=?  limit ? ,?";
@@ -29,24 +29,10 @@ public class PageDaoImpl implements PageDao {
             ps.setInt(3,pageSize);
             //预编译这个方法里面不能写sql语句
             rs=ps.executeQuery();
-            while(rs.next()){
-                Activity activity=new Activity();
-                activity.setActivityName(rs.getString("activityName"));
-                activity.setActivityType(rs.getString("activityType"));
-                activity.setActivitySite(rs.getString("activitySite"));
-                activity.setActivityStartTime(rs.getString("activityStartTime"));
-                activity.setActivityOverTime(rs.getString("activityOverTime"));
-                activity.setActivityTime(rs.getInt("activityTime"));
-                activity.setActivityPeople(rs.getInt("activityPeople"));
-                activity.setActivityContext(rs.getString("activityContext"));
-                activity.setId(rs.getInt("id"));
-                activity.setSponsorId((rs.getInt("sponsorId")));
-                activity.setManagerId(rs.getInt("managerId"));
-                activities.add(activity);
-            }
+            activities= WebUtils.activityList(rs);
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -70,8 +56,8 @@ public class PageDaoImpl implements PageDao {
                 pageTotalCount=rs.getInt(1);
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -83,7 +69,7 @@ public class PageDaoImpl implements PageDao {
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
-        List<Activity> activities=new ArrayList<Activity>();
+        List<Activity> activities=new ArrayList<>();
         try {
             conn= JdbcUtils.getConnection();
             String sql="select * from t_activity where managerId is "+whetherNull;
@@ -99,24 +85,10 @@ public class PageDaoImpl implements PageDao {
             ps.setInt(1,begin);
             ps.setInt(2,pageSize);
             rs=ps.executeQuery();
-            while(rs.next()){
-                Activity activity=new Activity();
-                activity.setActivityName(rs.getString("activityName"));
-                activity.setActivityType(rs.getString("activityType"));
-                activity.setActivitySite(rs.getString("activitySite"));
-                activity.setActivityStartTime(rs.getString("activityStartTime"));
-                activity.setActivityOverTime(rs.getString("activityOverTime"));
-                activity.setActivityTime(rs.getInt("activityTime"));
-                activity.setActivityPeople(rs.getInt("activityPeople"));
-                activity.setActivityContext(rs.getString("activityContext"));
-                activity.setId(rs.getInt("id"));
-                activity.setSponsorId((rs.getInt("sponsorId")));
-                activity.setManagerId(rs.getInt("managerId"));
-                activities.add(activity);
-            }
+            activities=WebUtils.activityList(rs);
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -146,8 +118,8 @@ public class PageDaoImpl implements PageDao {
                 pageTotalCount=rs.getInt(1);
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -159,7 +131,7 @@ public class PageDaoImpl implements PageDao {
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
-        List<Sponsor> sponsors=new ArrayList<Sponsor>();
+        List<Sponsor> sponsors=new ArrayList<>();
         try {
             conn= JdbcUtils.getConnection();
             String sql="select * from t_sponsor where managerId is null limit ? ,?";
@@ -168,20 +140,10 @@ public class PageDaoImpl implements PageDao {
             ps.setInt(1,begin);
             ps.setInt(2,pageSize);
             rs=ps.executeQuery();
+            sponsors=WebUtils.sponsorList(rs);
 
-            while(rs.next()){
-                Sponsor sponsor=new Sponsor();
-                sponsor.setId(rs.getInt("id"));
-                sponsor.setAccount(rs.getString("account"));
-                sponsor.setClubName(rs.getString("clubName"));
-                sponsor.setClubIntroduction(rs.getString("clubIntroduction"));
-                sponsor.setPrincipalName(rs.getString("principalName"));
-                sponsor.setPrincipalContact(rs.getString("principalContact"));
-                sponsors.add(sponsor);
-            }
-
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -204,8 +166,8 @@ public class PageDaoImpl implements PageDao {
                 pageTotalCount=rs.getInt(1);
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -229,8 +191,8 @@ public class PageDaoImpl implements PageDao {
                 pageTotalCount=rs.getInt(1);
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -242,8 +204,7 @@ public class PageDaoImpl implements PageDao {
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
-        Integer pageTotalCount=null;
-        List<Student> students=new ArrayList<Student>();
+        List<Student> students=new ArrayList<>();
         try {
             conn= JdbcUtils.getConnection();
             String sql="select s.id,s.name,s.number,s.grade_academe from t_student s join t_relationship1 r" +
@@ -254,17 +215,10 @@ public class PageDaoImpl implements PageDao {
             ps.setInt(2,begin);
             ps.setInt(3,pageSize);
             rs=ps.executeQuery();
-            while(rs.next()){
-               Student student=new Student();
-               student.setId(rs.getInt("id"));
-               student.setName(rs.getString("name"));
-               student.setNumber(rs.getString("number"));
-               student.setGrade_academe(rs.getString("grade_academe"));
-               students.add(student);
-            }
+            students=WebUtils.studentList(rs);
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -289,8 +243,8 @@ public class PageDaoImpl implements PageDao {
                 pageTotalCount=rs.getInt(1);
             }
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
@@ -302,8 +256,7 @@ public class PageDaoImpl implements PageDao {
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
-        Integer pageTotalCount=null;
-        List<Student> students=new ArrayList<Student>();
+        List<Student> students=new ArrayList<>();
         try {
             conn= JdbcUtils.getConnection();
             String sql="select s.id,s.name,s.number,s.grade_academe from t_student s join t_relationship2 r" +
@@ -315,20 +268,15 @@ public class PageDaoImpl implements PageDao {
             ps.setInt(3,begin);
             ps.setInt(4,pageSize);
             rs=ps.executeQuery();
-            while(rs.next()){
-                Student student=new Student();
-                student.setId(rs.getInt("id"));
-                student.setName(rs.getString("name"));
-                student.setNumber(rs.getString("number"));
-                student.setGrade_academe(rs.getString("grade_academe"));
-                students.add(student);
-            }
+            students=WebUtils.studentList(rs);
 
-        } catch (Exception throwables) {
-            throwables.printStackTrace();
+        } catch (Exception throwable) {
+            throwable.printStackTrace();
         }finally {
             JdbcUtils.close(conn,ps,rs);
         }
         return students;
     }
+
+
 }
