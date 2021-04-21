@@ -6,7 +6,8 @@ import com.huqingyong.www.po.Sponsor;
 import com.huqingyong.www.po.Student;
 import com.huqingyong.www.util.JdbcUtils;
 import com.huqingyong.www.util.WebUtils;
-
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,10 +28,8 @@ public class PageDaoImpl implements PageDao {
             ps.setInt(1,sponsorId);
             ps.setInt(2,begin);
             ps.setInt(3,pageSize);
-            //预编译这个方法里面不能写sql语句
             rs=ps.executeQuery();
             activities= WebUtils.activityList(rs);
-
         } catch (Exception throwable) {
             throwable.printStackTrace();
         }finally {
@@ -49,7 +48,6 @@ public class PageDaoImpl implements PageDao {
             conn= JdbcUtils.getConnection();
             String sql="select count(*) from t_activity where sponsorId=? ";
             ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
             ps.setInt(1,sponsorId);
             rs=ps.executeQuery();
             if(rs.next()){
@@ -81,7 +79,6 @@ public class PageDaoImpl implements PageDao {
                 }
                 sql+=" limit ?,?";
             ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
             ps.setInt(1,begin);
             ps.setInt(2,pageSize);
             rs=ps.executeQuery();
@@ -104,7 +101,6 @@ public class PageDaoImpl implements PageDao {
         try {
             conn= JdbcUtils.getConnection();
             String sql="select count(*) from t_activity where managerId is "+whetherNull;
-
                 if (vagueName!=null) {
                     sql += " and (activityName like '%" + vagueName + "%'"+" or  activityName like '" + vagueName + "%'"+" or activityName like '%" + vagueName + "')";
                 }
@@ -112,7 +108,6 @@ public class PageDaoImpl implements PageDao {
                     sql += " and (activityType  like '%" + vagueType + "%'"+" or activityType like '" + vagueType + "%'"+" or activityType  like '%" + vagueType + "')";
                 }
             ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
             rs=ps.executeQuery();
             if(rs.next()){
                 pageTotalCount=rs.getInt(1);
@@ -136,7 +131,6 @@ public class PageDaoImpl implements PageDao {
             conn= JdbcUtils.getConnection();
             String sql="select * from t_sponsor where managerId is null limit ? ,?";
             ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
             ps.setInt(1,begin);
             ps.setInt(2,pageSize);
             rs=ps.executeQuery();
@@ -155,12 +149,11 @@ public class PageDaoImpl implements PageDao {
         Connection conn=null;
         PreparedStatement ps=null;
         ResultSet rs=null;
-        Integer pageTotalCount=null;
+        Integer pageTotalCount = null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="select count(*) from t_sponsor where managerId is null";
             ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
             rs=ps.executeQuery();
             if(rs.next()){
                 pageTotalCount=rs.getInt(1);
@@ -184,7 +177,6 @@ public class PageDaoImpl implements PageDao {
             conn= JdbcUtils.getConnection();
             String sql="select count(*) from t_relationship1 where activityId=?";
             ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
             ps.setInt(1,activityId);
             rs=ps.executeQuery();
             if(rs.next()){
@@ -210,7 +202,6 @@ public class PageDaoImpl implements PageDao {
             String sql="select s.id,s.name,s.number,s.grade_academe from t_student s join t_relationship1 r" +
                     " where s.id=r.studentId and activityId=? limit ?,?";
             ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
             ps.setInt(1,activityId);
             ps.setInt(2,begin);
             ps.setInt(3,pageSize);
@@ -235,7 +226,6 @@ public class PageDaoImpl implements PageDao {
             conn= JdbcUtils.getConnection();
             String sql="select count(*) from t_relationship2 where activityId=? and sponsorId=?";
             ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
             ps.setInt(1,activityId);
             ps.setInt(2,sponsorId);
             rs=ps.executeQuery();
@@ -254,26 +244,19 @@ public class PageDaoImpl implements PageDao {
     @Override
     public List<Student> queryStudentByPage(Integer begin, Integer pageSize, Integer activityId, Integer sponsorId) {
         Connection conn=null;
-        PreparedStatement ps=null;
-        ResultSet rs=null;
         List<Student> students=new ArrayList<>();
         try {
+            QueryRunner runner=new QueryRunner();
             conn= JdbcUtils.getConnection();
             String sql="select s.id,s.name,s.number,s.grade_academe from t_student s join t_relationship2 r" +
                     " where s.id=r.studentId and activityId=? and sponsorId=? limit ?,?";
-            ps=conn.prepareStatement(sql);
-            //预编译这个方法里面不能写sql语句
-            ps.setInt(1,activityId);
-            ps.setInt(2,sponsorId);
-            ps.setInt(3,begin);
-            ps.setInt(4,pageSize);
-            rs=ps.executeQuery();
-            students=WebUtils.studentList(rs);
+            BeanListHandler<Student> beanListHandler=new BeanListHandler<>(Student.class);
+            students=runner.query(conn,sql,beanListHandler,activityId,sponsorId,begin,pageSize);
 
         } catch (Exception throwable) {
             throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,rs);
+            JdbcUtils.closeResource(conn);
         }
         return students;
     }

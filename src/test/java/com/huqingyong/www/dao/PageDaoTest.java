@@ -44,7 +44,7 @@ class PageDaoTest {
 
     @Test
     void queryStudentByPage() {
-        System.out.println(pageDao.queryStudentByPage(3,4,2));
+        System.out.println(pageDao.queryStudentByPage(1,4,2 ,1));
     }
 
 

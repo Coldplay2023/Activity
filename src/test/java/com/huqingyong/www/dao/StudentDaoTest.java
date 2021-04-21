@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class StudentDaoTest {
 
     StudentDao studentDao=new StudentDaoImpl();
-    Student student=new Student("3120005067","1234567890Y","胡庆勇","2020-计算机学院");
+    Student student=new Student("3120005000","1234567890Y","胡庆勇","2020-计算机学院");
     @Test
     void saveStudent() {
         studentDao.saveStudent(student);

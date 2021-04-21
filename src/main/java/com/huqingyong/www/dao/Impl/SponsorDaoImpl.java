@@ -3,6 +3,7 @@ package com.huqingyong.www.dao.Impl;
 import com.huqingyong.www.dao.SponsorDao;
 import com.huqingyong.www.po.Sponsor;
 import com.huqingyong.www.util.JdbcUtils;
+import com.huqingyong.www.util.WebUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +21,6 @@ public class SponsorDaoImpl implements SponsorDao {
             String sql="select * from t_sponsor where account =?";
             ps=conn.prepareStatement(sql);
             ps.setString(1,account);
-
             rs=ps.executeQuery();
             if(rs.next()) {
                 sponsor.setId(rs.getInt("id"));
@@ -55,8 +55,6 @@ public class SponsorDaoImpl implements SponsorDao {
             if(rs.next()) {
                 return true;
             }
-
-
         } catch (Exception throwable) {
             throwable.printStackTrace();
         }finally {
@@ -68,28 +66,15 @@ public class SponsorDaoImpl implements SponsorDao {
     @Override
     public void savingSponsor(Sponsor sponsor) {
         Connection conn=null;
-        PreparedStatement ps=null;
         try {
             conn= JdbcUtils.getConnection();
             String sql="insert t_sponsor (account,password,clubName,principalName,principalContact,clubIntroduction) " +
                     "values(?,?,?,?,?,?)";
-            ps=conn.prepareStatement(sql);
-
-            ps.setString(1,sponsor.getAccount());
-            ps.setString(2,sponsor.getPassword());
-            ps.setString(3,sponsor.getClubName());
-            ps.setString(4,sponsor.getPrincipalName());
-            ps.setString(5,sponsor.getPrincipalContact());
-            ps.setString(6,sponsor.getClubIntroduction());
-
-            //预编译这个方法里面不能写sql语句
-            ps.executeUpdate();
-
-
+            WebUtils.setSponsorValue(conn.prepareStatement(sql),sponsor).executeUpdate();
         } catch (Exception throwable) {
             throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,null);
+            JdbcUtils.closeResource(conn);
         }
     }
 
@@ -101,27 +86,15 @@ public class SponsorDaoImpl implements SponsorDao {
             conn= JdbcUtils.getConnection();
             String sql="update t_sponsor set account=? ,password=?, clubName=?, principalName=?,principalContact=?,clubIntroduction=?" +
                     " where id =?";
-            ps=conn.prepareStatement(sql);
-
-            ps.setString(1,sponsor.getAccount());
-            ps.setString(2,sponsor.getPassword());
-            ps.setString(3,sponsor.getClubName());
-            ps.setString(4,sponsor.getPrincipalName());
-            ps.setString(5,sponsor.getPrincipalContact());
-            ps.setString(6,sponsor.getClubIntroduction());
+            ps=WebUtils.setSponsorValue(conn.prepareStatement(sql),sponsor);
             ps.setInt(7,sponsor.getId());
-
-            //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
-
 
         } catch (Exception throwable) {
             throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,null);
+            JdbcUtils.close(conn,ps);
         }
     }
-
-
 
 }

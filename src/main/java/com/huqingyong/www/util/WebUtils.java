@@ -6,6 +6,8 @@ import com.huqingyong.www.po.Student;
 import org.apache.commons.beanutils.BeanUtils;
 
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -82,6 +84,37 @@ public class WebUtils {
             students.add(student);
         }
         return students;
+    }
+
+    public static PreparedStatement setActivityValue( PreparedStatement ps, Activity activity){
+        try {
+            ps.setString(1,activity.getActivityName());
+            ps.setString(2,activity.getActivityType());
+            ps.setString(3,activity.getActivitySite());
+            ps.setString(4,activity.getActivityStartTime());
+            ps.setString(5,activity.getActivityOverTime());
+            ps.setInt(6,activity.getActivityTime());
+            ps.setInt(7,activity.getActivityPeople());
+            ps.setString(8,activity.getActivityContext());
+            ps.setInt(9,activity.getSponsorId());
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return ps;
+    }
+
+    public static PreparedStatement setSponsorValue( PreparedStatement ps, Sponsor sponsor){
+        try {
+            ps.setString(1,sponsor.getAccount());
+            ps.setString(2,sponsor.getPassword());
+            ps.setString(3,sponsor.getClubName());
+            ps.setString(4,sponsor.getPrincipalName());
+            ps.setString(5,sponsor.getPrincipalContact());
+            ps.setString(6,sponsor.getClubIntroduction());
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return ps;
     }
 
 

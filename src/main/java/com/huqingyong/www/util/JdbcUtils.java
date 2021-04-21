@@ -1,34 +1,48 @@
 package com.huqingyong.www.util;
 
-import java.sql.*;
-import java.util.ResourceBundle;
+import com.alibaba.druid.pool.DruidDataSourceFactory;
+
+import javax.sql.DataSource;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
 
 public class JdbcUtils {
 
+    private static DataSource source;
+
     static {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
+            Properties pros=new Properties();
+            InputStream is = JdbcUtils.class.getClassLoader().getResourceAsStream("druid.properties");
+
+         /*   InputStream inputStream=ClassLoader.getSystemClassLoader().getResourceAsStream("resources/druid.properties");*/
+            pros.load(is);
+            source= DruidDataSourceFactory.createDataSource(pros);
+        } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-    }
-
-    public JdbcUtils() {
     }
 
 
     public static Connection getConnection() throws SQLException {
-
-        ResourceBundle bundle=ResourceBundle.getBundle("jdbc");
-        String url=bundle.getString("URL");
-        String user=bundle.getString("user");
-        String password=bundle.getString("password");
-        return DriverManager.getConnection(url, user, password);
-
-
+        Connection  conn=source.getConnection();
+        return conn;
     }
+
+    public static void closeResource (Connection cont) {
+        if (cont != null) {
+            try {
+                cont.close();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
+    }
+
 
     public static void close (Connection cont, Statement stmt, ResultSet rs) {
         if (rs != null) {
@@ -39,6 +53,24 @@ public class JdbcUtils {
             }
         }
 
+        if (stmt != null) {
+            try {
+                stmt.close();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
+
+        if (cont != null) {
+            try {
+                cont.close();
+            } catch (SQLException throwable) {
+                throwable.printStackTrace();
+            }
+        }
+    }
+
+    public static void close (Connection cont, Statement stmt) {
         if (stmt != null) {
             try {
                 stmt.close();

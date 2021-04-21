@@ -19,7 +19,6 @@ public class ManagerDaoImpl implements ManagerDao {
             ps=conn.prepareStatement(sql);
             ps.setString(1,managerAccount);
             ps.setString(2,managerPassword);
-
             rs=ps.executeQuery();
             if(rs.next()) {
                 return true;
@@ -44,7 +43,6 @@ public class ManagerDaoImpl implements ManagerDao {
             String sql="select id from t_manager where managerAccount=? ";
             ps=conn.prepareStatement(sql);
             ps.setString(1,managerAccount);
-
             rs=ps.executeQuery();
             if(rs.next()) {
                 managerId=rs.getInt("id");
@@ -69,13 +67,12 @@ public class ManagerDaoImpl implements ManagerDao {
 
             ps.setInt(1,managerId);
             ps.setInt(2,activityId);
-            //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
         } catch (Exception throwable) {
             throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,null);
+            JdbcUtils.close(conn,ps);
         }
     }
 
@@ -87,16 +84,14 @@ public class ManagerDaoImpl implements ManagerDao {
             conn= JdbcUtils.getConnection();
             String sql="update t_sponsor set managerId=? where id=?";
             ps=conn.prepareStatement(sql);
-
             ps.setInt(1,managerId);
             ps.setInt(2,sponsorId);
-            //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
         } catch (Exception throwable) {
             throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,null);
+            JdbcUtils.close(conn,ps);
         }
     }
 
@@ -108,9 +103,7 @@ public class ManagerDaoImpl implements ManagerDao {
             conn= JdbcUtils.getConnection();
             String sql="delete from t_activity  where id=?";
             ps=conn.prepareStatement(sql);
-
             ps.setInt(1,activityId);
-            //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
         } catch (Exception throwable) {
@@ -128,15 +121,13 @@ public class ManagerDaoImpl implements ManagerDao {
             conn= JdbcUtils.getConnection();
             String sql="delete from t_sponsor  where id=?";
             ps=conn.prepareStatement(sql);
-
             ps.setInt(1,sponsorId);
-            //预编译这个方法里面不能写sql语句
             ps.executeUpdate();
 
         } catch (Exception throwable) {
             throwable.printStackTrace();
         }finally {
-            JdbcUtils.close(conn,ps,null);
+            JdbcUtils.close(conn,ps);
         }
     }
 }
